@@ -1,0 +1,21 @@
+#!/bin/bash
+  
+# TASK:
+#  Write a shell Script to run the monitor the CPU health and should send an alert email if increase over 60% utilization
+
+##email subject
+subject="CPU Usage Alert"
+## sending mail to
+to="terraform03@gmail.com"
+
+usage=$(top -l 1 | grep "CPU" | awk '{print 100-$7}' | head -1)
+
+if [[ "${usage}" < 60.00 ]]; then
+        echo -e "Warning, server CPU usage is over 60% \n\nUsage: ${usage}%" \
+                | mail -s "$subject" "$to" && echo "mail sent"
+else
+        echo "Usage: ${usage}%"
+fi
+
+exit 0
+
